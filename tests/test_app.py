@@ -126,6 +126,20 @@ class TestSignup:
         for email in emails:
             assert email in activities_data["Art Club"]["participants"]
 
+    def test_signup_invalid_email_format(self, client):
+        """Test that signup rejects invalid email format"""
+        invalid_emails = [
+            "notanemail",
+            "missing@domain",
+            "@nodomain.com",
+            "spaces in@email.com",
+        ]
+        for invalid_email in invalid_emails:
+            response = client.post(
+                f"/activities/Chess%20Club/signup?email={invalid_email}"
+            )
+            assert response.status_code == 422
+
 
 class TestUnregister:
     """Tests for DELETE /activities/{activity_name}/unregister endpoint"""
@@ -178,6 +192,20 @@ class TestUnregister:
         activities_response = client.get("/activities")
         activities_data = activities_response.json()
         assert "michael@mergington.edu" not in activities_data["Chess Club"]["participants"]
+
+    def test_unregister_invalid_email_format(self, client):
+        """Test that unregister rejects invalid email format"""
+        invalid_emails = [
+            "notanemail",
+            "missing@domain",
+            "@nodomain.com",
+            "spaces in@email.com",
+        ]
+        for invalid_email in invalid_emails:
+            response = client.delete(
+                f"/activities/Chess%20Club/unregister?email={invalid_email}"
+            )
+            assert response.status_code == 422
 
 
 class TestRootEndpoint:
