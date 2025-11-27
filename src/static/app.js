@@ -91,6 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.className = "error";
         messageDiv.classList.remove("hidden");
         console.error("Error unregistering:", error);
+        // Hide message after 5 seconds
+        setTimeout(() => {
+          messageDiv.classList.add("hidden");
+        }, 5000);
       }
     }
   });
